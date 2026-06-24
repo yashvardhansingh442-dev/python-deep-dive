@@ -1,4 +1,4 @@
-90-Day Roadmap: Python + DSA + AGI/ML
+Copy90-Day Roadmap: Python + DSA + AGI/ML
 
 Single track, single focus. No Blender, no Internshala — this is the whole sprint now.
 
@@ -7,6 +7,20 @@ Commit convention: Day X: <topic> — one commit per day, no batching.
 
 Three phases, each a real 30-day unit. Don't start Phase 2 until Phase 1 is
 actually done — slide the calendar, not the order.
+
+Spaced repetition (Mon/Wed/Fri, all 90 days): add one easy LeetCode
+review problem, 10–15 min, reusing a pattern you've already solved (e.g. a
+new two-pointer problem on a day you already did two pointers). This runs on
+top of the day's main build on those three days only — not daily, so it
+doesn't compound the time-budget risk. Over 90 days this lands you around
+55–60 total problems instead of ~28.
+
+
+Day 0 — Git Fundamentals (before Day 1)
+
+Not one of the 90 days — do this once, before the sprint starts.
+
+TopicBuildBranchingCreate a branch per day's work instead of committing straight to mainMergingMerge a branch back into main, resolve one deliberate conflictPull requestsOpen a PR against your own repo, write a real descriptionRebase basicsgit rebase -i to clean up 2–3 messy commits into one
 
 
 Repo Structure
@@ -65,15 +79,15 @@ DayTopicBuild38Series & DataFrame basicsLoad a CSV, fix wrongly-inferred dtypes3
 
 Week 7 (Day 45–51): ML fundamentals, from scratch first
 
-DayTopicBuild45Supervised learning — train/test splitSplit + evaluate a toy dataset46Linear regressionImplement from scratch with NumPy47Gradient descentBatch gradient descent on synthetic data, plot convergence48Logistic regressionImplement from scratch, no sklearn49Evaluation metricsAccuracy, precision/recall, confusion matrix — from scratch50scikit-learn or PyTorch intro (pick one)Reimplement Days 46–48 with the library, compare51Neural network basics2-layer feedforward net from scratch in NumPy
+DayTopicBuild45Supervised learning — train/test splitSplit + evaluate a toy dataset46Linear regressionImplement from scratch with NumPy47Gradient descentBatch gradient descent on synthetic data, plot convergence48Logistic regression + evaluation metricsImplement from scratch, then compute accuracy/precision/recall/confusion matrix on it — no sklearn49PyTorch — tensors, Dataset, DataLoader, nn.ModuleReimplement Days 46–48 with PyTorch, compare50Neural networks I — the perceptronImplement a perceptron, show exactly where it fails (XOR)51Neural networks II — backprop intuitionBy hand: compute gradients on a tiny 2-input example, verify against autograd
 
-Week 8 (Day 52–58): Embeddings, attention — the bridge to AGI/ML
+Week 8 (Day 52–58): Embeddings, attention, and a real mini transformer
 
-DayTopicBuild52Vector spaces, cosine similarityCompute similarity between toy vectors53EmbeddingsTrain a tiny embedding on a small text corpus, visualize in 2D54Dimensionality reduction (PCA)Apply PCA to Day 53's embeddings, plot55Attention mechanism intuitionToy attention over a 5-token sequence56Transformer structure overviewDiagram + minimal forward pass of one attention block57Mock reviewTimed mixed NumPy/Pandas/ML exercise58Catch-upFinish anything carried over from Days 31–57
+DayTopicBuild52Neural networks III — 2-layer feedforward netFrom scratch in NumPy, then reimplement in PyTorch53Vector spaces, cosine similarityCompute similarity between toy vectors54Embeddings + PCATrain a tiny embedding on a small corpus, reduce to 2D with PCA, plot55Attention mechanism intuitionToy attention over a 5-token sequence56Transformer structural overviewDiagram: embedding → attention → feedforward → output57Mini transformer, part 1Tokenization + embedding matrix + a real self-attention layer58Mini transformer, part 2Feedforward layer + assemble the full forward pass, run it on a toy sentence — no training needed, just the forward pass
 
 Week 9 partial (Day 59–60)
 
-DayTopic59Repo + notebook cleanup60Phase 2 wrap-up — "what I learned" notes
+DayTopic59Mock review — timed mixed exercise: NumPy, Pandas, ML from scratch, NN, attention60Phase 2 wrap-up — repo cleanup + README + "what I learned" notes
 
 
 Phase 3 — Day 61–90: AGI/ML Systems
@@ -84,7 +98,7 @@ DayTopicBuild61What agent memory is — short vs long-term, context windowsIn-me
 
 Week 11 (Day 68–74): Continue the build + math gaps, applied
 
-DayTopicBuild68Continue Agent Memory Layer build—69Continue Agent Memory Layer build—70Causal inference, applied introToy causal graph + a simple do-calculus example71Formal logic, applied introSmall propositional-logic statement evaluator72Category theory, applied intro (functors, composition)Implement a simple Functor/Monad-style pattern in Python73Apply one of Days 70–72 to strengthen the decision-audit logic—74Continue Agent Memory Layer build—
+DayTopicBuild68Continue Agent Memory Layer build—69Continue Agent Memory Layer build—70Causal inference, applied introToy causal graph + a simple do-calculus example71Formal logic, applied introSmall propositional-logic statement evaluator72Probability + Bayes intuition, appliedNaive Bayes spam classifier from scratch — distributions, conditional probability, Bayes' theorem in code73Apply one of Days 70–72 to strengthen the decision-audit logic—74Continue Agent Memory Layer build—
 
 Week 12 (Day 75–81): Capstone
 
