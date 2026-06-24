@@ -1,6 +1,4 @@
-Copy90-Day Roadmap: Python + DSA + AGI/ML
-
-Single track, single focus. No Blender, no Internshala — this is the whole sprint now.
+90-Day Roadmap: Python + DSA + AGI/ML
 
 Daily budget: 60–75 min/day. ~20 min concept, ~40–55 min on the build.
 Commit convention: Day X: <topic> — one commit per day, no batching.
