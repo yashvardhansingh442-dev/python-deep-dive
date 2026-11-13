@@ -17,3 +17,9 @@ print(array[0:4:2]) #get every second row
 print(array[0:4:3]) #get every third row
 
 print(array[::2]) #get every second row
+
+print("now we will get the columns")
+
+print(array[:,0]) #get the first column
+
+print(array[:,1]) #get the second column
