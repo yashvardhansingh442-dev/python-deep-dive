@@ -23,3 +23,7 @@ print("now we will get the columns")
 print(array[:,0]) #get the first column
 
 print(array[:,1]) #get the second column
+
+print(array[:,-1]) #get the last column this is the negative indexing
+
+#negative indexing can be used to get the last elements of the array
