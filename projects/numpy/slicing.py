@@ -16,5 +16,4 @@ print(array[0:4:2]) #get every second row
 
 print(array[0:4:3]) #get every third row
 
-
 print(array[::2]) #get every second row
