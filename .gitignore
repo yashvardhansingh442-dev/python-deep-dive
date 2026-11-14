@@ -1,1 +1,56 @@
+# ---- Python bytecode / caches ----------------------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
 
+# ---- Virtual environments (Makefile uses .venv) ----------------------------
+.venv/
+venv/
+env/
+ENV/
+
+# ---- Packaging / build output (make build) ----------------------------------
+build/
+dist/
+*.egg-info/
+*.egg
+.eggs/
+wheels/
+pip-wheel-metadata/
+
+# ---- Tool caches (ruff, mypy, pytest, coverage) -----------------------------
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.pylint.d/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+
+# ---- Docs site (mkdocs build) -----------------------------------------------
+site/
+
+# ---- Jupyter ----------------------------------------------------------------
+.ipynb_checkpoints/
+
+# ---- Benchmark output (make bench) ------------------------------------------
+# Remove this line if you want to commit benchmark results.
+benchmarks/results/
+
+# ---- Secrets / local config -------------------------------------------------
+.env
+.env.*
+!.env.example
+
+# ---- Editors / IDEs ---------------------------------------------------------
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ---- OS junk ----------------------------------------------------------------
+.DS_Store
+Thumbs.db
+Desktop.ini
