@@ -1,1 +1,86 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
 
+[project]
+name = "python-deep-dive"
+version = "0.1.0"
+description = "Projects, bug write-ups, from-scratch rebuilds and experiments from learning Python properly."
+readme = "README.md"
+license = { text = "MIT" }
+authors = [{ name = "Yash Vardhan Singh" }]
+requires-python = ">=3.11"
+keywords = ["python", "learning", "deep-dive", "portfolio"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "License :: OSI Approved :: MIT License",
+]
+# The reusable package (src/pydeep) has no runtime dependencies yet.
+# Add numpy here only if src/pydeep itself imports it.
+dependencies = []
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8",
+    "pytest-cov>=5",
+    "ruff>=0.6",
+    "mypy>=1.10",
+    "pre-commit>=3.7",
+    "numpy>=1.26",  # used by projects/numpy and projects/linalg
+]
+docs = [
+    "mkdocs>=1.6",
+    "mkdocs-material>=9.5",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+# ---- pytest -----------------------------------------------------------------
+[tool.pytest.ini_options]
+minversion = "8.0"
+testpaths = ["tests"]
+addopts = "-ra --strict-markers --strict-config"
+
+# ---- coverage (make cov enforces 85% via the CLI flag) ----------------------
+[tool.coverage.run]
+source = ["src/pydeep"]
+branch = true
+
+[tool.coverage.report]
+show_missing = true
+exclude_lines = [
+    "pragma: no cover",
+    "if TYPE_CHECKING:",
+    "raise NotImplementedError",
+]
+
+# ---- ruff -------------------------------------------------------------------
+[tool.ruff]
+line-length = 88
+target-version = "py311"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = [
+    "E", "F", "W",   # pycodestyle + pyflakes
+    "I",             # import sorting
+    "B",             # bugbear
+    "UP",            # pyupgrade
+    "SIM",           # simplifications
+    "C4",            # comprehensions
+    "N",             # pep8-naming
+]
+
+[tool.ruff.lint.per-file-ignores]
+# fixes/ keeps deliberately broken code, so don't lint-fail on it
+"fixes/**" = ["E", "F", "B", "SIM", "N"]
+"tests/**" = ["B011"]
+
+# ---- mypy (make typecheck runs --strict on src/) ----------------------------
+[tool.mypy]
+python_version = "3.11"
+strict = true
+files = ["src"]
