@@ -6,8 +6,7 @@ import numpy as np
 #The dimensions have the same size, or one of the dimensions is 1. 
 # In this case, the smaller array is "stretched" to match the larger array.
 
-array1 = np.array([[1, 2, 3, 4],
-                   [5, 6, 7, 8]])
+array1 = np.array([[1, 2, 3, 4]])
 array2 = np.array([[1], [2], [3], [4]])
 print("This is the first array: ", array1)
 print("This is the second array: ", array2)
@@ -19,3 +18,12 @@ print("Shape of the first array: ", array1.shape)
 print("Shape of the second array: ", array2.shape)
 print(array1 * array2)  
 #The result is a 4x4 array where each element is the product of the corresponding elements in the two arrays.
+
+arrayA = np.array([[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]])
+arrayB = np.array([[1], [2], [3], [4], [5], [6], [7], [8], [9], [10]])
+print("This is the first array: ", arrayA)
+print("This is the second array: ", arrayB)
+#The shape of the first array is (1, 10) and the shape of the second array is (10, 1).
+print("Shape of the first array: ", arrayA.shape)   
+print("Shape of the second array: ", arrayB.shape)
+print(arrayA * arrayB)  
