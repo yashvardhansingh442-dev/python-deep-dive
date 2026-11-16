@@ -15,12 +15,14 @@ def det_recursive(matrix):
     )
 
 
+rng = np.random.default_rng(seed=1)  # seeded so runs are comparable
+
 for n in [4, 6, 8, 9]:
-    A = np.random.rand(n, n)
-    t0 = time.time()
+    A = rng.random((n, n))
+    t0 = time.perf_counter()
     det_recursive(A.tolist())
-    t_det = time.time() - t0
-    t0 = time.time()
+    t_det = time.perf_counter() - t0
+    t0 = time.perf_counter()
     np.linalg.solve(A, np.ones(n))
-    t_sol = time.time() - t0
+    t_sol = time.perf_counter() - t0
     print(n, round(t_det, 5), round(t_sol, 6))

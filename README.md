@@ -102,9 +102,9 @@ When something breaks along the way, the plan is to keep it: the smallest exampl
 | Folder | Purpose | Status |
 |---|---|---|
 | [`curriculum/`](curriculum/) | Written notes, one file per core Python topic | 15 notes |
-| [`learning-codes/`](learning-codes/) | Small experiment scripts: Python basics, NumPy, linear algebra, SciPy | about 30 scripts |
+| [`learning-codes/`](learning-codes/) | Small experiment scripts: Python basics, NumPy, linear algebra, SciPy | about 40 scripts |
 | [`projects/`](projects/) | Projects built with what I learn | 1 in progress |
-| [`src/pydeep/`](src/pydeep/) | Reusable, typed, tested package | just started |
+| [`src/pydeep/`](src/pydeep/) | Reusable, typed, tested package | input helpers |
 | [`tests/`](tests/) | Test suite run by CI | just started |
 
 ```
@@ -149,7 +149,8 @@ Each note covers what the concept is, short runnable examples, and common pitfal
 **SpendSense** ([`projects/numpy/SpendSense.py`](projects/numpy/SpendSense.py)) is a command-line spending tracker built on NumPy.
 
 - **Today:** asks for a name, a number of days, daily amounts for four categories and a monthly income; validates every input; stores the data as a `(days, categories)` array.
-- **Next:** summary report (totals per category, biggest-spend day, savings against income), a proper `main()` entry point, and tests.
+- **Done:** a `main()` entry point, and the input helpers are extracted to `src/pydeep/inputs.py` with tests.
+- **Next:** summary report (totals per category, biggest-spend day, savings against income).
 
 ---
 

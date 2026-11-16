@@ -1,4 +1,7 @@
 def classify(a, b, c, d, e, f):
+    if a == 0:
+        # elimination needs a nonzero pivot; swapping rows is the next lesson
+        raise ValueError("a is 0: swap the two equations first (row exchange)")
     m = d / a
     e2, f2 = e - m * b, f - m * c
     if e2 != 0:

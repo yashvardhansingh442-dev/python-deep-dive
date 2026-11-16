@@ -29,7 +29,7 @@ Last reviewed: **November 2026**
 | [Object-oriented basics](#5-object-oriented-basics) | 🟡 Learning | [`OOPs_baisc.md`](curriculum/OOPs_baisc.md) |
 | [NumPy](#6-numpy) | 🟢 Working | [`learning-codes/numpy/`](learning-codes/numpy/) |
 | [Linear algebra with code](#7-linear-algebra-with-code) | 🟡 Learning | [`learning-codes/linalg/`](learning-codes/linalg/) |
-| [SciPy](#8-scipy) | 🟡 Learning | [`learning-codes/scipy/`](learning-codes/scipy/) |
+| [SciPy](#8-scipy) | ⚪ Planned | [`learning-codes/scipy/`](learning-codes/scipy/) |
 | [Building a program](#9-building-a-program) | 🟡 Learning | [`SpendSense.py`](projects/numpy/SpendSense.py) |
 | [Tooling and quality](#10-tooling-and-quality) | 🟡 Learning | [`ci.yml`](.github/workflows/ci.yml), [`Makefile`](Makefile) |
 | [Git and GitHub](#11-git-and-github) | 🟢 Working | [commit history](../../commits/main) |
@@ -48,7 +48,7 @@ Last reviewed: **November 2026**
 | Data types | Use `int`, `float`, `str`, `bool`, check types with `type()` | [`datatypes.md`](curriculum/datatypes.md), [`datatype_check.py`](learning-codes/datatype_check.py) |
 | Type casting | Convert between types, and know that implicit and explicit casting differ | [`typecasting.py`](learning-codes/python/typecasting.py) |
 | Operators | Arithmetic, comparison, logical and assignment operators; identity versus equality; operator precedence | [`operator.md`](curriculum/operator.md) |
-| User input and output | Read with `input()`, format with f-strings | [`inp-user.py`](learning-codes/python/inp-user.py), [`f-string.py`](learning-codes/python/f-string.py), [`rectangle_area,py`](learning-codes/python/rectangle_area,py) |
+| User input and output | Read with `input()`, format with f-strings | [`inp-user.py`](learning-codes/python/inp-user.py), [`f-string.py`](learning-codes/python/f-string.py), [`rectangle_area.py`](learning-codes/python/rectangle_area.py) |
 | Conditionals | `if` / `elif` / `else`, nested conditions, truthy and falsy values, ternary expressions | [`conditionals.md`](curriculum/conditionals.md) |
 | Loops | `for`, `while`, `break`, `continue`, loop `else`, nested loops | [`loops.md`](curriculum/loops.md) |
 
@@ -123,7 +123,7 @@ Last reviewed: **November 2026**
 | Aggregation | Sum, mean, standard deviation, variance, min, max, argmin, argmax, along an axis | [`aggregate-function.py`](learning-codes/numpy/aggregate-function.py) |
 | Broadcasting | Explain the shape rules and use them on `(1, n)` and `(n, 1)` arrays | [`broadcasting.py`](learning-codes/numpy/broadcasting.py) |
 | Filtering | Boolean masks, comparison operators, `np.where` | [`filtering.py`](learning-codes/numpy/filtering.py), [`comp-operator.py`](learning-codes/numpy/comp-operator.py) |
-| Random numbers | Seeded generators, random integers, floats and uniform values | [`rand-num.py`](learning-codes/numpy/rand-num.py), [`unifrom-rnd.py`](learning-codes/numpy/unifrom-rnd.py) |
+| Random numbers | Seeded generators, random integers, floats and uniform values | [`rand-num.py`](learning-codes/numpy/rand-num.py), [`uniform_rng.py`](learning-codes/numpy/uniform_rng.py) |
 
 **Still to learn:** structured arrays, `np.einsum`, memory layout and views versus copies, performance profiling.
 
@@ -147,13 +147,9 @@ Last reviewed: **November 2026**
 
 ## 8. SciPy
 
-🟡 **Learning**
+⚪ **Planned**
 
-| Skill | What I can do | Evidence |
-|---|---|---|
-| Notebooks | Run and edit Jupyter notebooks | [`main.ipynb`](learning-codes/scipy/main.ipynb) |
-
-This area is at the very start. I will add real SciPy work (optimization, statistics, interpolation) and then move it to 🟢.
+No claims yet. [`main.ipynb`](learning-codes/scipy/main.ipynb) is only a placeholder notebook. I will add real SciPy work (optimization, statistics, interpolation) and then list skills here.
 
 ---
 
@@ -166,8 +162,10 @@ This area is at the very start. I will add real SciPy work (optimization, statis
 | Structuring a script | Split a program into small functions with docstrings | [`SpendSense.py`](projects/numpy/SpendSense.py) |
 | Combining inputs into arrays | Turn several validated inputs into a `(days, categories)` NumPy array with `np.column_stack` | same file |
 | Planning in small steps | Build the input layer first, then the report | [README roadmap](README.md#9-roadmap) |
+| Entry point | Use `main()` and `if __name__ == "__main__":` | same file |
+| Separating logic from I/O | Input helpers take `input_fn`/`output_fn`, so they can be tested | [`inputs.py`](src/pydeep/inputs.py) |
 
-**Still to learn:** `if __name__ == "__main__":` entry points, separating logic from input and output so it can be tested, command-line arguments, packaging a small tool.
+**Still to learn:** command-line arguments, packaging a small tool.
 
 ---
 
@@ -202,7 +200,7 @@ This area is at the very start. I will add real SciPy work (optimization, statis
 
 ⚪ **Planned**
 
-The repo has one smoke test in [`tests/`](tests/). Real testing skills will be added as SpendSense's logic moves into `src/pydeep/`.
+The repo has a smoke test and a first real test file, [`test_inputs.py`](tests/test_inputs.py), for the input helpers. Testing stays Planned until fixtures and more cases are in.
 
 **Plan:** `pytest` basics, fixtures, parametrized tests, testing code that reads input, measuring coverage.
 
