@@ -13,9 +13,9 @@ print(type(age))
 
 
 #example of typecasting
-age = str(age)
-age += "1"
-print (age)
+age_is_valid = str(age)
+age_is_valid += "1"
+print (age_is_valid)
 
-name=bool(name)
-print(name)
+name_is_valid = bool(name)
+print(name_is_valid)
