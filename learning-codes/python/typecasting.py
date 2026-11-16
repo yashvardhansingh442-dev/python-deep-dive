@@ -10,3 +10,12 @@ is_student = True
 #This will help us to indentify the datatype of the variable
 print(type(name))
 print(type(age))
+
+
+#example of typecasting
+age = str(age)
+age += "1"
+print (age)
+
+name=bool(name)
+print(name)
