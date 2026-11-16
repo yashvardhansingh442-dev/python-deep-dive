@@ -1,1 +1,1 @@
-print ("hello linear algebra")
+print("hello linear algebra")

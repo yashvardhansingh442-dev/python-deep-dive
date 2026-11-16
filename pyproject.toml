@@ -27,12 +27,7 @@ dev = [
     "pytest-cov>=5",
     "ruff>=0.6",
     "mypy>=1.10",
-    "pre-commit>=3.7",
     "numpy>=1.26",  # used by projects/numpy and projects/linalg
-]
-docs = [
-    "mkdocs>=1.6",
-    "mkdocs-material>=9.5",
 ]
 
 [tool.setuptools.packages.find]
@@ -62,6 +57,8 @@ exclude_lines = [
 line-length = 88
 target-version = "py311"
 src = ["src", "tests"]
+# the notes contain hand-aligned example code; keep it as written
+extend-exclude = ["curriculum"]
 
 [tool.ruff.lint]
 select = [
@@ -78,6 +75,8 @@ select = [
 # fixes/ keeps deliberately broken code, so don't lint-fail on it
 "fixes/**" = ["E", "F", "B", "SIM", "N"]
 "tests/**" = ["B011"]
+# learning-codes/ are study notes with long explanatory comments
+"learning-codes/**" = ["E501"]
 
 # ---- mypy (make typecheck runs --strict on src/) ----------------------------
 [tool.mypy]

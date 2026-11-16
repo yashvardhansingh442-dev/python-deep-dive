@@ -1,10 +1,10 @@
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
 
 x = np.linspace(-5, 5, 400)
 y = (1 - x) / 2
 
-plt.figure(figsize=(8,6))
+plt.figure(figsize=(8, 6))
 plt.plot(x, y, linewidth=2)
 
 # x-intercept (1,0)

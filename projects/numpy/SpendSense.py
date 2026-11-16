@@ -1,5 +1,8 @@
-"""This is a simple Python script that demonstrates basic functionality for a spending analysis tool. 
-It allows users to input their expenses, categorize them, and generate a summary report of their spending habits."""
+"""SpendSense: a small spending-analysis script.
+
+Collects daily expenses per category plus a monthly income, and stores them
+in a NumPy array. A summary report is planned but not written yet.
+"""
 
 import numpy as np
 
@@ -53,7 +56,7 @@ def read_income():
 
 name = input("Enter your name: ")
 print(f"Hello, {name}! Welcome to SpendSense, your personal spending analysis tool.")
-print("Here we will help you track your expenses and understand your spending habits better.\n")
+print("Here we will help you track your expenses and understand your spending.\n")
 
 days = read_days()
 print(f"\nFor each category, enter {days} daily amounts separated by commas or spaces.")
@@ -61,7 +64,7 @@ print("Enter 0 for days with no spending.\n")
 
 columns = [read_numbers(f"{cat} expenses: ", days) for cat in CATEGORIES]
 
-expenses = np.column_stack(columns)   # shape: (days, categories)
+expenses = np.column_stack(columns)  # shape: (days, categories)
 income = read_income()
 
 print("\nShape of expense data:", expenses.shape)

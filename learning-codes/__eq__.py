@@ -17,7 +17,7 @@ if __name__ == "__main__":
     p2 = Point(1, 2)
     p3 = p1
 
-    print(p1 == p2)   # True  -> __eq__ compares values
-    print(p1 is p2)   # False -> different objects in memory
-    print(p1 is p3)   # True  -> same object, same identity
-    print(p1 == p3)   # True  -> same values too
+    print(p1 == p2)  # True  -> __eq__ compares values
+    print(p1 is p2)  # False -> different objects in memory
+    print(p1 is p3)  # True  -> same object, same identity
+    print(p1 == p3)  # True  -> same values too
