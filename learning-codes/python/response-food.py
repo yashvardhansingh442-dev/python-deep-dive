@@ -1,0 +1,1 @@
+response =  input("Would you like some food")
