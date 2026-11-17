@@ -8,9 +8,19 @@ print(pd.__version__)
 
 data = [100, True, 300]
 
-series = pd.Series(data)
-print(series)
+series = pd.Series(data, index = ["a", "b", "c"]) #index in series function is used on lhs 
+#                                                  side of the series.
 
-#dtype is object idk why loook around jk dtype is object because the Series contains mixed data types (integers and boolean).
+series.loc["c"] = 200 # we can also change the value of the data later on
+
+print(series.loc["c"]) #.loc[] is a label-based indexing property used to access, 
+#                       filter, and modify groups of rows and columns in a DataFrame or Series.
+
+#dtype is object idk why loook around jk dtype is object because the Series contains 
+#mixed data types (integers and boolean).
 # Pandas uses the object dtype to store values of different Python data types
 # in a single Series without forcing them into one common numeric dtype.
+
+#iloc 
+#.iloc[], which relies on zero-based integer positions, 
+#.loc[] looks up data using explicit row index labels and column names.
