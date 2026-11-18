@@ -1,5 +1,7 @@
 
 # Conditional Expression (Ternary Operator)
+#Print or assign one of two values based on the condition
+#X if condition else Y
 
 num = 5
 a = 6
