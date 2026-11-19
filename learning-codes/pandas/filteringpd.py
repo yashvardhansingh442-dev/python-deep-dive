@@ -6,7 +6,7 @@ import pandas as pd
 
 #print(series[series >= 350])
 
-#example 1 
+#example 1
 calories = {"day 1 " : 1750, "day 2" : 2550, "day 3" : 1500}
 series = pd.Series(calories)
 
@@ -14,8 +14,6 @@ series = pd.Series(calories)
 #print(series)
 
 #example 2
-
-import pandas as pd
 
 data = ["bulbasaur", "Ivysaur", "Venasaur",
         "Charmander", "charmeleon", "charlizard"]

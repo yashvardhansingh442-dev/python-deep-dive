@@ -1,6 +1,5 @@
 import matplotlib
 import matplotlib.pyplot as plt
-import numpy as np #we can also use numpy library for some more functionality
 
 # pyplot is a module which we will import in matplotlib as plt
 
@@ -14,14 +13,14 @@ y3 = [12, 20, 28, 24, 50]
 
 # function draws 2D lines and markers using x-axis and y-axis data arrays
 
-line_style = dict(
-    marker=".",
-    markersize=15,
-    markerfacecolor="cyan",
-    markeredgecolor="cyan",
-    linestyle="solid",
-    linewidth=2,
-)
+line_style = {
+    "marker": ".",
+    "markersize": 15,
+    "markerfacecolor": "cyan",
+    "markeredgecolor": "cyan",
+    "linestyle": "solid",
+    "linewidth": 2,
+}
 
 # marker means just marker which can be used to point out data points in the graph
 # markersize can be used to adjust the size of the marker, we can also use ms instead of markersize (short abbreviation)
