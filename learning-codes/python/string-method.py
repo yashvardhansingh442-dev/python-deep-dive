@@ -7,7 +7,8 @@ upperr = name.upper()#converts all lowercase letters in a string to uppercase an
 lowerr = upperr.lower()#converts all uppercase letter in a sting to lowercase and returns a new string
 specific = name.isdigit()#function that checks whether all characters in a string are digits. 
 #                        It returns True if every character is a digit and the string is not empty, and False otherwise
-
+io = name.isalpha()#string method returns True if all characters in a string are alphabetic letters and the string is not empty. 
+#                   If the string contains spaces, numbers, punctuation, or is empty, it returns False
 print(result)
 print(observation)
 print(hell)
@@ -15,3 +16,4 @@ print(name)
 print(upperr)
 print(lowerr)
 print(specific)
+print(io)
