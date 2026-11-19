@@ -1,4 +1,4 @@
-#String indexing in Python lets you access individual characters in a text sequence using square brackets ([]). 
+#String indexing in Python lets you access individual characters in a text sequence using square brackets ([]).
 #Python uses zero-based indexing, meaning the first character is at position 0
 #[start : end : step]
 
