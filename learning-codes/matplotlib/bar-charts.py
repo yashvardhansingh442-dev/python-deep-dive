@@ -6,8 +6,8 @@ import numpy as np
 categories = np.array(["Grain", "Fruits", "Veggies", "Chocolate", "Curd", "Momos", "Pancake"])
 values = np.array([4, 3, 2, 1, 5, 1, 6])
 
-plt.bar(categories,values)
-
+plt.bar(categories,values, color = "Skyblue")
+#plt.barh(categories,values, color = "Skyblue") #.barh is used to plat bar chart in the horizontal format
 plt.xlabel("GROCERY LIST")
 plt.ylabel("QTY.")
 plt.title("SHOPPING CART", family = "impact")
