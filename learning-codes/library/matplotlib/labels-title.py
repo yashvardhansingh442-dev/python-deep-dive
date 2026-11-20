@@ -1,62 +1,55 @@
 import matplotlib
 import matplotlib.pyplot as plt
 
-#pyplot is a module which we will import in matplotlib as plt
+# pyplot is a module which we import from matplotlib as plt
 
-print(matplotlib.__version__)
-# __version__ prints the installed matplotlib version
+print(matplotlib.__version__) # prints the installed matplotlib version
 
 x = [2023, 2024, 1998, 1990, 1920]
 y1 = [15, 20, 25, 30, 35]
 y2 = [10, 18, 26, 28, 45]
 y3 = [12, 20, 28, 24, 50]
 
-# function draws 2D lines and markers using x-axis and y-axis data arrays
+# plot() is used to draw 2d line graphs using x and y values
 
 line_style = {
-    "marker": ".",
-    "markersize": 10,
-    "markerfacecolor": "cyan",
-    "markeredgecolor": "cyan",
-    "linestyle": "solid",
-    "linewidth": 2,
+    "marker": ".", # adds a dot at each data point
+    "markersize": 10, # changes the size of the marker (ms)
+    "markerfacecolor": "cyan", # changes the inside color of marker (mfc)
+    "markeredgecolor": "cyan", # changes the border color of marker (mec)
+    "linestyle": "solid", # changes the style of line (solid, dashed, dotted, dashdot)
+    "linewidth": 2, # changes the thickness of line (lw)
 }
 
-# marker means just marker which can be used to point out data points in the graph
-# markersize can be used to adjust the size of the marker, we can also use ms instead of markersize (short abbreviation)
-# markerfacecolor is used to adjust the fill color of the marker, we can also use mfc instead of markerfacecolor (short abbreviation)
-# markeredgecolor is used to adjust the color of the marker edge, we can also use mec instead of markeredgecolor (short abbreviation)
-# linestyle dashed is used to change the line style used to plot the graph
-# linewidth is used to change the line width used to plot the graph
-# color is used to change the line color used to plot the graph
+# we can use a dictionary to store multiple styling properties
+# ** is used to unpack the dictionary inside plt.plot()
 
-plt.plot(x, y1, **line_style,color = "RED")
-plt.plot(x, y2, **line_style, color = "green")
-plt.plot(x, y3, **line_style, color = "blue")
+plt.plot(x, y1, **line_style, color="red", label="LINE 1") # plots first line in red
+plt.plot(x, y2, **line_style, color="green", label="LINE 2") # plots second line in green
+plt.plot(x, y3, **line_style, color="blue", label="LINE 3") # plots third line in blue
 
-plt.xlabel("Year")
-plt.ylabel("Values")
-plt.title("Multiple Line Graphs", fontsize = 15, family = "impact") #we can change the fontsize using fontsize, using font as family,
-#                                                                   fontweight as bold, and also the color
+plt.xlabel("Year") # adds label to x-axis
+plt.ylabel("Values") # adds label to y-axis
 
-plt.legend()
+plt.title("Multiple Line Graphs", fontsize=15, family="impact") # changes title, fontsize and font family
 
-plt.show()
-# function renders and displays all open figures on your screen
+plt.legend() # displays labels of all lines
 
-# In Matplotlib, creating a line_style = dict(...) lets you group multiple line properties (color, width, dash pattern, markers, transparency)
-# into a single reusable dictionary and apply it cleanly using Python's dictionary unpacking operator (**).
-# Matplotlib automatically assigns different colors to each plot
-# using its default color cycle when no color is explicitly specified.
-
-# Each new plt.plot() call takes the next color from the color cycle.
-
-# If we specify color manually or pass a dictionary containing color,
-# Matplotlib uses our specified color instead of the default color cycle.
+plt.show() # displays the graph
 
 
-#In Matplotlib, plt.xticks() is a function used to get or set the current tick locations and labels on the x-axis.
-#If you are working with the object-oriented interface (fig, ax), the equivalent method is ax.set_xticks()
+# color is used to change the line color
+# alpha is used to control transparency (0 = invisible, 1 = fully visible)
+# marker can be ., o, *, +, x, s, D etc.
+# linestyle can be solid, dashed, dotted or dashdot
+# linewidth changes the thickness of the line
 
-#In Matplotlib, tick_params() is used to customize the appearance of axis ticks, tick labels, and gridlines at once.
-#You can call it on an Axes object (ax.tick_params()) or via the pyplot interface (plt.tick_params()
+# matplotlib automatically assigns different colors to each plot
+# when we don't specify any color manually
+# it uses a default color cycle for every new plt.plot()
+
+# plt.xticks() is used to get or change the x-axis tick locations and labels
+# example: plt.xticks([1990, 1998, 2023, 2024])
+
+# tick_params() is used to customize the appearance of axis ticks and labels
+# example: plt.tick_params(axis="x", labelsize=12)
