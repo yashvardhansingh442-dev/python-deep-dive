@@ -34,6 +34,7 @@ plt.plot(x, y1, **line_style,color = "RED")
 plt.plot(x, y2, **line_style, color = "green")
 plt.plot(x, y3, **line_style, color = "blue")
 
+plt.grid()
 plt.show()
 # function renders and displays all open figures on your screen
 
