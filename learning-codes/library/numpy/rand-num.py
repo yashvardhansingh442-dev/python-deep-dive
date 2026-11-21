@@ -1,16 +1,18 @@
+
 import numpy as np
 
-# Generate random integers
-# seed is used to initialize the random number generator, so that the same random numbers are generated each time the code is run.
+# Create a random number generator.
+# Using a seed ensures that the same random numbers are generated every time.
+rng = np.random.default_rng(seed=42)
 
-rng = np.random.default_rng()  # Create a random number generator
-print("this is the random number generator: ", rng.integers(low=1, high=6))
-# Generate random numbers
-random_numbers = np.random.randint(
-    1, 100, size=(5, 1)
-)  # this will generate 5 random integers between 1 and 100
-print("Random Numbers: ", random_numbers)
+# Generate a random integer between 1 and 5 (inclusive).
+print("Random Dice Roll:", rng.integers(low=1, high=6))
 
-# Generate random floats
-random_floats = np.random.rand(5)  # this will generate 5 random floats between 0 and 1
-print("Random Floats: ", random_floats)
+# Generate 5 random integers between 1 and 99.
+# size=(5, 1) creates an array with 5 rows and 1 column.
+random_numbers = rng.integers(low=1, high=100, size=(5, 1))
+print("Random Numbers:", random_numbers)
+
+# Generate 5 random floating-point numbers between 0 and 1.
+random_floats = rng.random(size=5)
+print("Random Floats:", random_floats)
