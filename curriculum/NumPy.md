@@ -44,7 +44,9 @@
 35. [Phase 6 Deep Dive: Random Numbers and Linear Algebra](#35-phase-6-deep-dive-random-numbers-and-linear-algebra)
 36. [Phase 7 Deep Dive: Advanced NumPy](#36-phase-7-deep-dive-advanced-numpy)
 37. [Phase 8 Deep Dive: Data Science and ML Applications](#37-phase-8-deep-dive-data-science-and-ml-applications)
-38. [Cheat Sheet](#38-cheat-sheet)
+38. [String and Character Arrays](#38-string-and-character-arrays)
+39. [Cheat Sheet](#39-cheat-sheet)
+40. [Appendix A: Review of My Practice Scripts](#appendix-a-review-of-my-practice-scripts-numpy-folder)
 
 ---
 
@@ -55,7 +57,7 @@ Follow the phases in order. Each phase lists where the topic lives in this guide
 | Phase | Focus | Main result | Main sections | Deep dive |
 |---|---|---|---|---|
 | 1 | Foundations | Understand arrays and NumPy | 1, 2, 3 | 30 |
-| 2 | Creating and inspecting arrays | Build arrays and read their properties | 4, 5, 6 | 31 |
+| 2 | Creating and inspecting arrays | Build arrays and read their properties | 4, 5, 6 | 31, 38 (strings) |
 | 3 | Indexing and manipulation | Select, update, and reshape data | 7, 8, 9, 10 | 32 |
 | 4 | Operations and broadcasting | Compute efficiently without manual loops | 12, 13, 14 | 33 |
 | 5 | Array processing | Combine, split, sort, search, and filter | 11, 15, 16 | 34 |
@@ -63,7 +65,7 @@ Follow the phases in order. Each phase lists where the topic lives in this guide
 | 7 | Advanced NumPy | Memory, missing data, files, and performance | 19, 20, 21, 22, 23, 24, 25 | 36 |
 | 8 | Data science and ML applications | Build numerical workflows and ML foundations | 26 (+ 29 practice) | 37 |
 
-Cross-cutting sections: 27 (pitfalls), 28 (NumPy 2.x changes), 29 (practice problems), 38 (cheat sheet).
+Cross-cutting sections: 27 (pitfalls), 28 (NumPy 2.x changes), 29 (practice problems), 39 (cheat sheet), Appendix A (review of my practice scripts and the next scripts to write).
 
 **How to use each phase:** read the main sections, run every code block, read the deep dive, then answer the **Checkpoint** questions at the end of the deep dive without looking at the answers.
 
@@ -2967,7 +2969,150 @@ Suggested portfolio projects: linear/logistic regression from scratch, k-means i
 
 ---
 
-## 38. Cheat Sheet
+## 38. String and Character Arrays
+
+NumPy arrays are not only numeric. Text arrays use the same indexing, slicing, broadcasting, and sorting you already know. Typical uses: labels, class names, categorical columns, tokens, and "puzzle" arrays of letters.
+
+### 38.1 Creating string arrays and the `<U` dtype
+
+```python
+names = np.array(["hello", "numpy", "array"])
+names.dtype                    # <U5   -> Unicode, max 5 characters per element
+names.itemsize                 # 20    -> 5 chars * 4 bytes (UTF-32)
+
+np.array("A")                  # 0-d string array: shape (), ndim 0, dtype <U1
+np.array(["A", "B", "C"])      # 1D
+np.array([["A", "B"], ["C", "D"]])      # 2D, dtype <U1
+```
+
+The width is fixed by the **longest** string at creation. Assigning something longer **truncates silently**:
+
+```python
+a = np.array(["cat", "dog"])             # <U3
+a[0] = "elephant"
+a                                        # ['ele' 'dog']   <- truncated!
+np.array(["abcdef"], dtype="U3")         # ['abc']
+a = a.astype("U10")                      # widen first, then assign
+```
+
+Elements you pull out are `np.str_` (a subclass of Python `str`), so `+` on two elements concatenates:
+
+```python
+x = np.array(["A", "B", "C"])
+x[1] + x[0]                              # 'BA'
+type(x[1])                               # numpy.str_
+```
+
+### 38.2 Vectorized string functions: `np.strings` (NumPy 2.x)
+
+`np.strings` applies string operations to every element at once (the older `np.char` still works and is the only place with `split`).
+
+```python
+s = np.array(["hello world", "numpy", "Array"])
+
+np.strings.upper(s); np.strings.lower(s); np.strings.title(s)
+np.strings.capitalize(s); np.strings.swapcase(s)
+np.strings.str_len(s)                       # [11  5  5]
+np.strings.add(s, "!")                      # concatenation; in NumPy 2.x s + "!" also works
+np.strings.multiply("ab", 3)                # 'ababab'
+np.strings.replace(s, "o", "0")
+np.strings.find(s, "o")                     # index or -1
+np.strings.count(s, "a")
+np.strings.startswith(s, "n"); np.strings.endswith(s, "y")
+np.strings.strip(np.array(["  hi  "]))      # also lstrip, rstrip
+np.strings.center(np.array(["ab"]), 6, "*") # ['**ab**']  (ljust, rjust too)
+np.strings.zfill(np.array(["7", "42"]), 4)  # ['0007' '0042']
+np.strings.partition(np.array(["a=b"]), "=")   # three arrays: before, sep, after
+np.strings.isalpha(s); np.strings.isdigit(s); np.strings.isupper(s)
+
+np.char.split(np.array(["a b c"]))          # object array of lists (no np.strings.split)
+np.char.add(["a", "b"], ["c", "d"])         # works in all NumPy versions
+```
+
+In NumPy 1.x, use `np.char.*` for all of these (and `np.char.add` instead of `+`).
+
+### 38.3 Comparing, sorting, searching text
+
+```python
+w = np.array(["pear", "Apple", "apple", "fig"])
+
+w == "fig"                       # [False False False  True]
+np.sort(w)                       # ['Apple' 'apple' 'fig' 'pear']   (uppercase sorts first)
+np.sort(np.strings.lower(w))     # case-insensitive order
+w[np.argsort(np.strings.str_len(w))]       # sort by length
+np.isin(w, ["fig", "pear"])      # membership mask
+w[np.strings.startswith(w, "a")] # boolean filtering works as usual
+```
+
+Word frequency (bag of words) with `unique`:
+
+```python
+words = np.array("the cat and the dog and the bird".split())
+vals, counts = np.unique(words, return_counts=True)
+vals[counts.argmax()]                      # 'the'
+vals[np.argsort(-counts)][:3]              # top 3 words
+```
+
+### 38.4 Converting between text and numbers
+
+```python
+np.array([1.5, 2]).astype(str)             # ['1.5' '2.0']
+np.array(["1", "2", "3"]).astype(int)      # [1 2 3]
+np.array(["1.5", "2"]).astype(float)       # [1.5 2. ]
+"".join(np.array(["h", "i"]))              # 'hi'  (join letters back into one string)
+arr.tolist()                               # back to Python lists
+```
+
+### 38.5 Character codes and vectorized ciphers
+
+A `U1` array can be viewed as its Unicode code points, so character math is just integer math:
+
+```python
+text = np.array(list("hello"))
+codes = text.view(np.uint32)               # [104 101 108 108 111]
+shifted = (codes.astype(np.int64) - 97 + 3) % 26 + 97       # Caesar shift by 3
+"".join(shifted.astype(np.uint32).view("U1"))               # 'khoor'
+
+np.frombuffer("hello".encode(), dtype=np.uint8)             # bytes: [104 101 108 108 111]
+```
+
+### 38.6 Picking letters out of an N-d array (coordinate indexing)
+
+Instead of adding many `array[i, j, k]` terms by hand, store the coordinates and index once with fancy indexing:
+
+```python
+grid = np.array([
+    [["A", "B", "C"], ["D", "E", "F"], ["G", "H", "I"]],
+    [["J", "K", "L"], ["M", "N", "O"], ["P", "Q", "R"]],
+    [["S", "T", "U"], ["V", "W", "X"], ["Y", "Z", " "]],
+])
+coords = np.array([(1, 2, 0), (1, 2, 2), (0, 2, 2)])        # (n, 3) list of (i, j, k)
+letters = grid[tuple(coords.T)]            # same as grid[coords[:,0], coords[:,1], coords[:,2]]
+"".join(letters)                           # 'PRI'
+```
+
+### 38.7 `StringDType`: variable-length strings (NumPy 2.x)
+
+```python
+sd = np.array(["a", "a much longer string"], dtype=np.dtypes.StringDType())
+sd.dtype                                   # StringDType()   no truncation, no fixed width
+
+sd = np.array(["x", None, "z"], dtype=np.dtypes.StringDType(na_object=None))   # missing values
+```
+
+Use `StringDType` when strings vary a lot in length or you need a missing-value marker. Use `<U` for small fixed vocabularies. For heavy text analysis or many text columns, move to **Pandas** (`str` accessor) or dedicated NLP libraries.
+
+### Checkpoint 38
+
+1. What is the dtype of `np.array(["a", "bcd"])`, and why? *(`<U3`; width of the longest string.)*
+2. What happens if you assign `"hello"` into a `<U3` array? *(Silently truncated to `'hel'`; widen with `astype('U10')` first.)*
+3. Which function counts words in a string array? *(`np.unique(..., return_counts=True)`.)*
+4. How do you read the first letter of every string at once? *(`np.strings.slice` in newer NumPy, or `arr.astype('U1')`, which truncates to one character.)*
+
+
+---
+
+## 39. Cheat Sheet
 
 ### Create
 ```
@@ -3038,6 +3183,7 @@ Generator(PCG64) bit_generator.state spawn  dirichlet multinomial lognormal
 linalg: eigvalsh vector_norm matrix_norm LinAlgError  svd low-rank  ridge closed form
 nanmean nanmedian ma.masked_invalid interp(NaN fill) memmap open_memmap threadpoolctl
 np.testing.assert_allclose  numerical gradient check
+strings: <U dtype (truncates!)  np.strings.upper/replace/find/str_len/add  StringDType  np.unique(return_counts)
 ```
 
 ### Golden rules
@@ -3058,5 +3204,296 @@ np.testing.assert_allclose  numerical gradient check
 - Official docs: https://numpy.org/doc/stable/ (User Guide and API reference).
 - Implement from scratch: linear regression, k-NN, k-means, PCA, a small MLP, then move on to PyTorch (its tensor API mirrors NumPy).
 - Companion libraries: **Pandas** (tabular), **Matplotlib** (plotting), **SciPy** (scientific algorithms), **Numba** (JIT speedups).
+
+---
+
+## Appendix A: Review of My Practice Scripts (`numpy/` folder)
+
+This appendix analyzes the 14 scripts in `numpy.zip`: what each one covers, where it sits in the roadmap, what is missing, corrections to a few details, and the next scripts to write. All 14 scripts run without errors on NumPy 2.5.
+
+### A.1 Inventory: script to guide section
+
+| Script | What it practices | Guide section |
+|---|---|---|
+| `single-dim-arr.py` | 1D vs 2D arrays, `ndim`, scalar multiply, `type()` | 3, 6 |
+| `zero-dim-arr.py` | 0-d array (a string), `ndim` | 30.4, 38 |
+| `multi-dim-arr.py` | 3D string array, `ndim`, `shape` | 3, 6 |
+| `multi-dim-indexing.py` | indexing a 3D array with `[i, j, k]` | 7, 38.6 |
+| `slicing.py` | `start:stop:step`, rows, columns, negative index, reverse | 7 |
+| `filtering.py` | boolean masks, `&`, `np.where` | 8, 16 |
+| `comp-operator.py` | `==`, `>=`, `<` produce boolean arrays | 12.1 |
+| `arthimetic-scalar.py` | array and scalar arithmetic | 12.1 |
+| `element-wise-arthimetic.py` | array and array arithmetic | 12.1 |
+| `arthimetic-vectorized-math-func.py` | `sqrt`, `round`, `floor`, `ceil`, `pi` | 12.2 |
+| `broadcasting.py` | `(1, n) * (n, 1)` outer table | 13 |
+| `aggregate-function.py` | `sum`, `mean`, `std`, `var`, `min`, `max`, `argmin`, `argmax`, `axis` | 14 |
+| `rand-num.py` | `rng.integers`, `np.random.randint`, `np.random.rand` | 18 |
+| `uniform_rng.py` | seeded `default_rng(...).uniform()` | 18 |
+
+### A.2 Progress by roadmap phase
+
+| Phase | Status | Covered by your scripts | Still to practice |
+|---|---|---|---|
+| 1 Foundations | Partial | `ndim`/`shape` for 0D to 3D, scalar math | `dtype`, `size`, list vs array speed, `shape` vs `size` |
+| 2 Creating/inspecting | Barely started | `np.array(...)` only | `zeros`, `ones`, `full`, `arange`, `linspace`, `eye`, `dtype`, `astype`, attributes |
+| 3 Indexing/manipulation | Mostly done | slicing, 3D indexing, boolean filtering | assignment, fancy indexing, `reshape`, `flatten`, transpose, `newaxis`, views vs copies |
+| 4 Operations/broadcasting | Mostly done | scalar and element-wise math, ufuncs, comparison, aggregates, broadcasting | `keepdims`, `cumsum`, `clip`, `abs`/`exp`/`log`, `\|` and `~`, a broadcasting **error** case |
+| 5 Array processing | Not started | (`np.where` only) | `concatenate`, `stack`, `split`, `sort`, `argsort`, `unique`, `searchsorted` |
+| 6 Random + linear algebra | Partial | `integers`, `randint`, `rand`, `uniform` | `normal`, `choice`, `shuffle`, `permutation`, reproducible seeds, **all** of linear algebra |
+| 7 Advanced | Not started | none | NaN handling, files, views/strides, performance, einsum |
+| 8 Data science/ML | Not started | none | scaling, regression, k-means, PCA, a small network |
+
+You have solid Phase 3 and Phase 4 basics. The biggest holes are Phase 2 (creation and dtype), Phase 5, and everything from linear algebra onward.
+
+### A.3 Review notes with fixes
+
+**1. `filtering.py`: the "teenagers" group includes children.**
+`ages[ages < 21]` returns `[11 15 9 12 18]`, so 9, 11, and 12 are labeled teenagers, and age 20 falls in no group. Define explicit ranges, or label everything in one pass with `np.select`:
+
+```python
+children = ages[ages < 13]
+teenagers = ages[(ages >= 13) & (ages <= 19)]      # [15 18]
+adults = ages[(ages >= 20) & (ages <= 45)]         # [21 37 45 36 25]
+seniors = ages[ages > 45]                          # [58 99]
+
+labels = np.select([ages < 13, ages < 20, ages <= 45],
+                   ["child", "teen", "adult"], default="senior")   # same shape as ages
+```
+
+Also, boolean indexing on a 2D array **flattens** the result to 1D. Use `np.where(mask, ages, 0)` (or `labels` above) to keep the shape. The variable name `sigma` usually means standard deviation; `only_18` would be clearer.
+
+**2. `rand-num.py`: the upper bound is exclusive, and the labels mislead.**
+
+```python
+rng = np.random.default_rng()
+rng.integers(low=1, high=6)                  # returns 1..5, never 6
+rng.integers(low=1, high=6, endpoint=True)   # 1..6 (a real dice roll)
+rng.integers(low=1, high=7)                  # also 1..6
+```
+
+`np.random.randint(1, 100, size=(5, 1))` gives values from 1 to **99**. The print label says "this is the random number generator" but prints a number, not the generator. The comment on seeds is right, but no seed is passed, so results differ on every run. Also, the script mixes the legacy API (`np.random.randint`, `np.random.rand`) with the modern one. Pick one:
+
+```python
+rng = np.random.default_rng(seed=42)           # reproducible
+dice = rng.integers(1, 6, endpoint=True)
+numbers = rng.integers(1, 100, size=(5, 1))    # 1..99
+floats = rng.random(5)                         # [0, 1)
+```
+
+**3. `uniform_rng.py`: the comment describes a different function.**
+The comment explains `np.random.seed()`, but the code uses `np.random.default_rng(seed=1)`, which is a separate, newer API (`seed()` sets hidden global state; `default_rng(seed)` makes a local generator). The result is the same every run (`0.5118...`), which is the point of seeding. `uniform()` returns a value in `[0, 1)` by default; give it a range and size to make the example more useful:
+
+```python
+rng = np.random.default_rng(seed=1)
+rng.uniform()                              # 0.5118216247002567 (always, with seed=1)
+rng.uniform(low=10, high=20, size=3)       # three floats in [10, 20)
+```
+
+**4. `aggregate-function.py`: three details worth recording.**
+- `np.argmax(array)` on a 2D array returns the **flattened** index (`9`), not the position `(1, 4)`. Convert with `np.unravel_index(array.argmax(), array.shape)`.
+- `np.std` and `np.var` default to the **population** formula (`ddof=0`): `std = 2.872`. The sample version is `np.std(array, ddof=1)` = `3.028`.
+- Add the per-axis versions, which you will use constantly:
+
+```python
+array.max(axis=1)                    # [ 5 10]   max of each row
+array.mean(axis=0)                   # [3.5 4.5 5.5 6.5 7.5]   mean of each column
+array.sum(axis=1, keepdims=True)     # shape (2, 1), keeps the axis for broadcasting
+np.argmax(array, axis=1)             # [4 4]   column of the max in each row
+np.cumsum(array, axis=1)             # running totals along each row
+```
+
+**5. `arthimetic-vectorized-math-func.py`: `round` is not "round half up".**
+`np.round([1.2, 2.5, 3.7])` gives `[1. 2. 4.]`. The `2.5 -> 2` result is correct: NumPy rounds halves to the nearest **even** number (`0.5 -> 0`, `1.5 -> 2`, `2.5 -> 2`, `3.5 -> 4`). The comment "rounded to the nearest integer" is fine for most values, but add a note so `2.5 -> 2` does not look like a bug. The result stays `float`; use `.astype(int)` for integers.
+
+**6. `broadcasting.py`: show the failure and the rules.**
+The two examples are valid and produce a multiplication table. Add the error case so the rule sticks:
+
+```python
+a = np.array([1, 2, 3])        # shape (3,)
+b = np.array([1, 2])           # shape (2,)
+a + b                          # ValueError: operands could not be broadcast together (3,) (2,)
+
+# Rule: compare shapes from the right; each pair must be equal or one must be 1.
+# (1, 4) * (4, 1) -> (4, 4)   OK
+# (3,)   + (2,)   -> error
+# Fix by reshaping: a[:, None] + b[None, :]  -> shape (3, 2)
+```
+
+**7. `multi-dim-indexing.py`: replace 16 hand-typed terms with coordinates.**
+Your version works (it prints the full message). A shorter and less error-prone version stores the coordinates in a list:
+
+```python
+coords = [(1, 2, 0), (1, 2, 2), (0, 2, 2), (2, 0, 0)]       # and so on
+word = "".join(array[c] for c in coords)                    # one index per tuple
+# or vectorized fancy indexing:
+idx = np.array(coords).T
+word = "".join(array[tuple(idx)])
+```
+
+See Section 38.6.
+
+**8. `zero-dim-arr.py`: it only prints `0`.** Also show what makes a 0-d array different from a plain value:
+
+```python
+a = np.array("A")
+a.ndim, a.shape, a.dtype       # (0, (), dtype('<U1'))
+a.item()                       # 'A'  (plain Python str)
+np.array(5).shape              # ()   numbers can be 0-d too
+```
+
+**9. File naming and layout.**
+- `arthimetic` is a typo for `arithmetic` (it appears in two filenames).
+- Hyphens in filenames (`multi-dim-arr.py`) mean the file cannot be imported (`import multi-dim-arr` is a syntax error). Use `snake_case` everywhere; you already used it once in `uniform_rng.py`.
+- Group by phase so the folder mirrors the roadmap (see A.4).
+
+**10. Comment style.**
+Your formatter wraps long `print(...)` lines so the explanatory comment lands after the closing parenthesis, which is hard to read. Put the comment **above** the statement and keep the expected output in a short `# Output:` line, as you already do in some files:
+
+```python
+# sum of every element in the 2D array
+print("Sum of all elements:", np.sum(array))
+# Output: 55
+```
+
+### A.4 Suggested folder layout and script template
+
+```
+numpy/
+  README.md                      # roadmap checklist, tick off each script
+  phase1_foundations/
+  phase2_creating_inspecting/
+  phase3_indexing_manipulation/   <- move slicing.py, multi_dim_indexing.py, filtering.py here
+  phase4_operations_broadcasting/ <- arithmetic_*.py, comparison_operators.py, broadcasting.py, aggregate_functions.py
+  phase5_array_processing/
+  phase6_random_linalg/           <- rand_num.py, uniform_rng.py
+  phase7_advanced/
+  phase8_ml_applications/
+```
+
+Template for every new script (concept, code, expected output, one "try it" exercise):
+
+```python
+"""Topic: <one line>.  Phase <n>.  Guide section <n>."""
+import numpy as np
+
+# 1. concept in one sentence
+arr = np.array([1, 2, 3])
+
+# 2. demonstrate
+print("shape:", arr.shape, "dtype:", arr.dtype)
+# Output: shape: (3,) dtype: int64
+
+# 3. edge case or common mistake
+# ...
+
+# 4. try it: <one exercise for next time>
+```
+
+### A.5 Next scripts to write (in suggested order)
+
+Names follow your one-concept-per-file style.
+
+| Phase | Script | Goal | Guide § |
+|---|---|---|---|
+| 1 | `list_vs_array_speed.py` | time a list comprehension against an array operation | 1 |
+| 1 | `array_attributes.py` | `shape`, `size`, `ndim`, `dtype`, `itemsize`, `nbytes` | 6 |
+| 2 | `create_zeros_ones_full.py` | `zeros`, `ones`, `full`, `empty`, `*_like` | 4 |
+| 2 | `create_arange_linspace.py` | `arange` vs `linspace`, float step trap | 4 |
+| 2 | `create_identity_diag.py` | `eye`, `diag`, `tri`, `meshgrid` | 4 |
+| 2 | `dtypes_astype.py` | `dtype`, `astype`, overflow in `uint8` | 5 |
+| 3 | `assign_with_slices.py` | change values via slices and masks | 7 |
+| 3 | `fancy_indexing.py` | index with lists, paired vs `np.ix_` | 8 |
+| 3 | `reshape_flatten.py` | `reshape`, `-1`, `ravel`, `flatten` | 10 |
+| 3 | `transpose_axes.py` | `.T`, `swapaxes`, `moveaxis` | 10 |
+| 3 | `views_vs_copies.py` | slice changes the original, `.copy()` does not | 9 |
+| 3 | `newaxis_expand_dims.py` | `None`, `expand_dims`, `squeeze` | 10 |
+| 4 | `aggregate_axis_keepdims.py` | per-row, per-column, `keepdims` | 14 |
+| 4 | `cumulative_ops.py` | `cumsum`, `cumprod`, `diff` | 14 |
+| 4 | `math_exp_log_abs_clip.py` | `exp`, `log`, `abs`, `clip` | 12 |
+| 4 | `logical_operators.py` | `&`, `\|`, `~`, `any`, `all` | 8, 33 |
+| 4 | `broadcasting_error_and_fix.py` | the failing shape and its fix | 13 |
+| 4 | `broadcasting_normalize.py` | subtract column means, divide by std | 13 |
+| 5 | `concatenate_stack.py` | `concatenate`, `vstack`, `hstack`, `stack` | 11 |
+| 5 | `split_array.py` | `split`, `array_split` | 11 |
+| 5 | `sort_argsort.py` | `sort`, `argsort`, sort rows by a column | 15 |
+| 5 | `unique_counts.py` | `unique` with `return_counts` | 15 |
+| 5 | `searchsorted_digitize.py` | binning values | 34 |
+| 5 | `filter_rows_2d.py` | keep rows where all/any condition holds | 34 |
+| 6 | `random_normal_choice.py` | `normal`, `choice`, `shuffle`, `permutation` | 18 |
+| 6 | `random_reproducible.py` | same seed gives same numbers | 18, 35 |
+| 6 | `matmul_dot.py` | `@`, `dot`, `outer`, `*` vs `@` | 17 |
+| 6 | `linalg_solve_inv.py` | `solve` vs `inv`, `det`, `norm` | 17 |
+| 6 | `linalg_eig_svd.py` | `eigh`, `svd`, reconstruct the matrix | 17, 35 |
+| 7 | `missing_nan.py` | `isnan`, `nanmean`, imputation | 19, 36 |
+| 7 | `save_load_files.py` | `save`, `load`, `savetxt`, `loadtxt` | 21, 36 |
+| 7 | `memory_strides.py` | `strides`, views, `nbytes` | 24, 36 |
+| 7 | `vectorize_vs_loop.py` | benchmark a loop against vectorized code | 24, 25 |
+| 7 | `einsum_basics.py` | matmul, trace, batched dot with `einsum` | 22 |
+| 8 | `standardize_features.py` | z-score scaler class | 37 |
+| 8 | `linear_regression_scratch.py` | normal equation and gradient descent | 26, 37 |
+| 8 | `kmeans_scratch.py` | k-means with broadcasting | 26 |
+| 8 | `pca_svd.py` | PCA via SVD | 26, 37 |
+| 8 | `mlp_scratch.py` | forward and backward pass, Adam | 37 |
+
+### A.6 Corrected versions of the scripts that had issues
+
+`filtering.py` (fixed):
+
+```python
+import numpy as np
+
+ages = np.array([[11, 21, 37, 58, 45, 99], [15, 36, 9, 12, 18, 25]])
+
+children = ages[ages < 13]
+teenagers = ages[(ages >= 13) & (ages <= 19)]
+adults = ages[(ages >= 20) & (ages <= 45)]
+seniors = ages[ages > 45]
+even_ages = ages[ages % 2 == 0]
+odd_ages = ages[ages % 2 != 0]
+
+print("Original array:\n", ages)
+print("Children:", children)        # [11  9 12]
+print("Teenagers:", teenagers)      # [15 18]
+print("Adults:", adults)            # [21 37 45 36 25]
+print("Seniors:", seniors)          # [58 99]
+
+# keep the shape: replace everything except 18 with 0
+only_18 = np.where(ages == 18, ages, 0)
+print(only_18)
+
+# label every element in one pass (same shape as ages)
+group = np.select([ages < 13, ages < 20, ages <= 45], ["child", "teen", "adult"], default="senior")
+print(group)
+```
+
+`rand_num.py` and `uniform_rng.py` (combined and fixed):
+
+```python
+import numpy as np
+
+rng = np.random.default_rng(seed=42)       # one modern generator, reproducible
+
+print("Dice roll (1-6):", rng.integers(1, 6, endpoint=True))
+print("Five integers in [1, 99]:\n", rng.integers(1, 100, size=(5, 1)))
+print("Five floats in [0, 1):", rng.random(5))
+print("Three floats in [10, 20):", rng.uniform(low=10, high=20, size=3))
+```
+
+`aggregate_functions.py` (additions to append):
+
+```python
+print("Position of max (row, col):", np.unravel_index(array.argmax(), array.shape))   # (1, 4)
+print("Sample std (ddof=1):", np.std(array, ddof=1))        # 3.0277
+print("Max of each row:", array.max(axis=1))                # [ 5 10]
+print("Mean of each column:", array.mean(axis=0))           # [3.5 4.5 5.5 6.5 7.5]
+print("Row sums, kept 2D:\n", array.sum(axis=1, keepdims=True))
+```
+
+### A.7 What was missing from the guide itself
+
+Comparing your scripts to the guide, one real gap showed up: **string and character arrays** (your `zero-dim-arr.py`, `multi-dim-arr.py`, and `multi-dim-indexing.py` all use them). That is now **Section 38**. Everything else in your scripts was already covered; the rest of this appendix is the review and the plan for what to practice next.
+
+
+---
 
 *End of guide.*
