@@ -1,4 +1,3 @@
-
 import numpy as np
 
 # Broadcasting allows NumPy to perform operations on arrays of different shapes.

@@ -1,4 +1,3 @@
-
 import numpy as np
 
 # Create a 1D NumPy array.

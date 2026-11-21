@@ -1,4 +1,3 @@
-
 import numpy as np
 
 # Create a random number generator.

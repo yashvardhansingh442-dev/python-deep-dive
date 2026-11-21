@@ -1,4 +1,3 @@
-
 import numpy as np
 
 # Filtering is used to extract elements from an array based on a condition.
@@ -7,8 +6,8 @@ import numpy as np
 ages = np.array([[11, 21, 37, 58, 45, 99],
                  [15, 36, 9, 12, 18, 25]])
 
-# Extract ages below 21.
-teenagers = ages[ages < 21]
+# Extract ages which are in teen like thirteen fifteen etc.
+teenagers = ages[(ages < 21) & (ages >= 13)]
 
 # Extract ages between 21 and 45 (inclusive).
 adults = ages[(ages >= 21) & (ages <= 45)]
