@@ -11,6 +11,7 @@ data = [100, True, 300]
 series = pd.Series(data, index = ["a", "b", "c"]) #index in series function is used on lhs
 #                                                  side of the series.
 
+print(series) #can print the series in a tabular format happy!
 series.loc["c"] = 200 # we can also change the value of the data later on
 
 print(series.loc["c"]) #.loc[] is a label-based indexing property used to access,
