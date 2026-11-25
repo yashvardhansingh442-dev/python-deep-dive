@@ -7,7 +7,7 @@ ages = np.array([[11, 21, 37, 58, 45, 99],
                  [15, 36, 9, 12, 18, 25]])
 
 # Extract ages which are in teen like thirteen fifteen etc.
-teenagers = ages[(ages < 21) & (ages >= 13)]
+teenagers = ages[(ages < 20) & (ages >= 13)]
 
 # Extract ages between 21 and 45 (inclusive).
 adults = ages[(ages >= 21) & (ages <= 45)]
@@ -33,5 +33,5 @@ odd_ages = ages[ages % 2 != 0]
 print("The odd ages are:", odd_ages)
 
 # Keep the age 18 and replace all other values with 0.
-sigma = np.where(ages == 18, ages, 0)
-print("Using np.where():", sigma)
+only_18 = np.where(ages == 18, ages, 0)
+print("Using np.where():", only_18)
