@@ -1,4 +1,3 @@
-
 # Python Compound Interest Calculator
 
 principle = 0
